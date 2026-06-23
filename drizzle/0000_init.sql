@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS "clauses" (
   "position" integer NOT NULL DEFAULT 0,
   "word_count" integer NOT NULL DEFAULT 0,
   "search_vector" tsvector
-    GENERATED ALWAYS AS (to_tsvector('english', coalesce(heading, '') || ' ' || text)) STORED,
+    GENERATED ALWAYS AS (to_tsvector('english', coalesce("heading", '') || ' ' || "text")) STORED,
   "created_at" timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS "clauses_search_idx" ON "clauses" USING gin ("search_vector");

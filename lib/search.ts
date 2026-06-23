@@ -18,13 +18,6 @@ export type ClauseHit = {
   clauseTypeName: string | null;
 };
 
-const SNIPPET_HEADLINE = sql`ts_headline(
-  'english',
-  clauses.text,
-  websearch_to_tsquery('english', ${sql.placeholder("q")}),
-  'StartSel=<mark>,StopSel=</mark>,MaxFragments=2,MinWords=20,MaxWords=60'
-)`;
-
 export async function searchClauses(opts: {
   query: string;
   typeSlug?: string;
@@ -40,7 +33,12 @@ export async function searchClauses(opts: {
     select
       clauses.id,
       clauses.heading,
-      ${SNIPPET_HEADLINE} as text,
+      ts_headline(
+        'english',
+        clauses.text,
+        websearch_to_tsquery('english', ${q}),
+        'StartSel=<mark>,StopSel=</mark>,MaxFragments=2,MinWords=20,MaxWords=60'
+      ) as text,
       clauses.word_count as "wordCount",
       ts_rank(clauses.search_vector, websearch_to_tsquery('english', ${q})) as rank,
       contracts.id as "contractId",
