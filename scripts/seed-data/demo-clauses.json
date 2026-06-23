@@ -1,0 +1,182 @@
+[
+  {
+    "filer": { "cik": "0000320193", "name": "Apple Inc.", "ticker": "AAPL", "sicCode": "3571", "sicIndustry": "Electronic Computers" },
+    "contract": {
+      "accessionNumber": "0000320193-24-000123",
+      "exhibitNumber": "10.1",
+      "filingType": "10-K",
+      "filingDate": "2024-11-01",
+      "title": "Demo: Master Services Agreement",
+      "sourceUrl": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193",
+      "counterparty": "Acme Cloud Services, Inc.",
+      "governingLaw": "California"
+    },
+    "clauses": [
+      {
+        "typeSlug": "indemnification",
+        "heading": "Indemnification by Supplier",
+        "text": "Supplier shall defend, indemnify, and hold harmless Customer and its affiliates, officers, directors, employees, and agents from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to (i) any breach by Supplier of its representations, warranties, or covenants under this Agreement; (ii) any negligence, willful misconduct, or fraud of Supplier or its personnel; (iii) any infringement or misappropriation by Supplier of any intellectual property right of a third party; or (iv) any failure by Supplier to comply with applicable laws. Customer shall provide Supplier with prompt written notice of any claim, allow Supplier to control the defense thereof, and reasonably cooperate at Supplier's expense."
+      },
+      {
+        "typeSlug": "limitation-of-liability",
+        "heading": "Limitation of Liability",
+        "text": "EXCEPT FOR LIABILITY ARISING FROM A PARTY'S INDEMNIFICATION OBLIGATIONS, BREACH OF CONFIDENTIALITY, OR GROSS NEGLIGENCE OR WILLFUL MISCONDUCT, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, DATA, OR USE, WHETHER IN AN ACTION IN CONTRACT, TORT, OR OTHERWISE, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. EACH PARTY'S AGGREGATE LIABILITY UNDER THIS AGREEMENT SHALL NOT EXCEED THE FEES PAID OR PAYABLE BY CUSTOMER UNDER THIS AGREEMENT DURING THE TWELVE (12) MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM."
+      },
+      {
+        "typeSlug": "force-majeure",
+        "heading": "Force Majeure",
+        "text": "Neither party shall be liable for any failure or delay in performance under this Agreement (other than for payment obligations) to the extent caused by events beyond such party's reasonable control, including acts of God, fire, flood, earthquake, pandemic, war, terrorism, civil disturbance, governmental action, embargo, or unavailability of common carriers or utilities. The affected party shall promptly notify the other party and shall use commercially reasonable efforts to mitigate the effects and resume performance as soon as practicable. If the force majeure event continues for more than sixty (60) consecutive days, either party may terminate this Agreement upon written notice without further liability."
+      },
+      {
+        "typeSlug": "confidentiality",
+        "heading": "Confidentiality",
+        "text": "Each party (the \"Receiving Party\") acknowledges that it may receive Confidential Information of the other party (the \"Disclosing Party\"). The Receiving Party shall (a) use the Confidential Information solely for the purposes of performing under this Agreement; (b) protect the Confidential Information using at least the same degree of care it uses to protect its own confidential information of a similar nature, and in no event less than a reasonable degree of care; and (c) not disclose the Confidential Information to any third party, except to its employees, contractors, and advisors who have a need to know and who are bound by confidentiality obligations no less protective than those set forth herein. The obligations in this Section shall survive termination of this Agreement for a period of five (5) years, except with respect to trade secrets, which shall be protected for so long as they remain trade secrets."
+      },
+      {
+        "typeSlug": "governing-law",
+        "heading": "Governing Law",
+        "text": "This Agreement and any dispute arising out of or relating hereto shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of laws principles. The United Nations Convention on Contracts for the International Sale of Goods shall not apply."
+      }
+    ]
+  },
+  {
+    "filer": { "cik": "0000789019", "name": "Microsoft Corporation", "ticker": "MSFT", "sicCode": "7372", "sicIndustry": "Prepackaged Software" },
+    "contract": {
+      "accessionNumber": "0000789019-24-000058",
+      "exhibitNumber": "10.4",
+      "filingType": "10-K",
+      "filingDate": "2024-07-29",
+      "title": "Demo: Enterprise Software License Agreement",
+      "sourceUrl": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
+      "counterparty": "Customer Enterprise",
+      "governingLaw": "Washington"
+    },
+    "clauses": [
+      {
+        "typeSlug": "license-grant",
+        "heading": "License Grant",
+        "text": "Subject to the terms and conditions of this Agreement and Customer's payment of all applicable fees, Licensor hereby grants to Customer a non-exclusive, non-transferable, worldwide license, during the Term, to install and use the Software solely for Customer's internal business operations and only by the number of Authorized Users for whom subscriptions have been purchased. The license expressly excludes any right to (i) sublicense, sell, lease, or otherwise transfer the Software; (ii) modify, translate, or create derivative works; or (iii) reverse engineer, decompile, or disassemble the Software except to the extent expressly permitted by applicable law."
+      },
+      {
+        "typeSlug": "warranties-disclaimer",
+        "heading": "Warranty Disclaimer",
+        "text": "EXCEPT FOR THE EXPRESS WARRANTIES SET FORTH IN THIS AGREEMENT, THE SOFTWARE AND ALL RELATED SERVICES ARE PROVIDED \"AS IS\" AND LICENSOR DISCLAIMS ALL OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. LICENSOR DOES NOT WARRANT THAT THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECT IN THE SOFTWARE WILL BE CORRECTED."
+      },
+      {
+        "typeSlug": "termination-for-cause",
+        "heading": "Termination for Cause",
+        "text": "Either party may terminate this Agreement upon written notice if the other party (a) materially breaches this Agreement and fails to cure such breach within thirty (30) days after receipt of written notice describing the breach in reasonable detail; (b) becomes insolvent, makes an assignment for the benefit of creditors, or is the subject of a voluntary or involuntary bankruptcy proceeding that is not dismissed within sixty (60) days; or (c) ceases to conduct its business in the ordinary course."
+      },
+      {
+        "typeSlug": "audit-rights",
+        "heading": "Audit",
+        "text": "During the Term and for one (1) year thereafter, Licensor may, no more than once per calendar year and upon thirty (30) days' prior written notice, audit Customer's use of the Software to verify compliance with this Agreement. Such audit shall be conducted during normal business hours and in a manner that does not unreasonably interfere with Customer's business operations. If the audit reveals that Customer has underpaid fees by more than five percent (5%), Customer shall reimburse Licensor for the reasonable costs of the audit, in addition to paying the underpaid fees plus interest."
+      }
+    ]
+  },
+  {
+    "filer": { "cik": "0001652044", "name": "Alphabet Inc.", "ticker": "GOOGL", "sicCode": "7370", "sicIndustry": "Computer Services" },
+    "contract": {
+      "accessionNumber": "0001652044-24-000022",
+      "exhibitNumber": "10.2",
+      "filingType": "10-Q",
+      "filingDate": "2024-04-25",
+      "title": "Demo: Strategic Partnership Agreement",
+      "sourceUrl": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+      "counterparty": "Partner Co.",
+      "governingLaw": "Delaware"
+    },
+    "clauses": [
+      {
+        "typeSlug": "non-compete",
+        "heading": "Non-Competition",
+        "text": "During the Term and for a period of twelve (12) months following termination of this Agreement, Partner shall not, directly or indirectly, engage in, own any interest in, or provide services to any business that develops, markets, or sells products or services that are substantially similar to and competitive with the Restricted Products in the Territory. This restriction shall not prohibit Partner from owning passive investments of less than two percent (2%) in publicly traded entities."
+      },
+      {
+        "typeSlug": "non-solicitation",
+        "heading": "Non-Solicitation",
+        "text": "During the Term and for a period of eighteen (18) months thereafter, neither party shall directly or indirectly solicit for employment any employee of the other party with whom such party had contact in connection with this Agreement; provided, however, that general advertisements not specifically targeted at such employees, and the hiring of any individual who responds thereto, shall not constitute a breach of this Section."
+      },
+      {
+        "typeSlug": "ip-ownership",
+        "heading": "Intellectual Property Ownership",
+        "text": "Each party shall retain all right, title, and interest in and to its Background IP. Foreground IP created solely by a party in the course of performing under this Agreement shall be owned by that party. Foreground IP jointly created by the parties shall be jointly owned, with each party having the unrestricted right to exploit such Joint IP without accounting to the other party, subject to the confidentiality obligations of this Agreement."
+      }
+    ]
+  },
+  {
+    "filer": { "cik": "0001318605", "name": "Tesla, Inc.", "ticker": "TSLA", "sicCode": "3711", "sicIndustry": "Motor Vehicles" },
+    "contract": {
+      "accessionNumber": "0001318605-24-000045",
+      "exhibitNumber": "10.3",
+      "filingType": "8-K",
+      "filingDate": "2024-06-12",
+      "title": "Demo: Supply Agreement",
+      "sourceUrl": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001318605",
+      "counterparty": "Battery Supplier Ltd.",
+      "governingLaw": "New York"
+    },
+    "clauses": [
+      {
+        "typeSlug": "payment-terms",
+        "heading": "Payment Terms",
+        "text": "Customer shall pay each undisputed invoice within forty-five (45) days after receipt of a correct invoice. Invoices shall be sent to the address designated by Customer and shall include the purchase order number, line item descriptions, quantities, unit prices, and any applicable taxes itemized separately. Any amount not paid when due shall accrue interest at the lesser of one percent (1%) per month or the maximum rate permitted by law, from the due date until paid in full."
+      },
+      {
+        "typeSlug": "insurance",
+        "heading": "Insurance",
+        "text": "Throughout the Term, Supplier shall maintain at its own expense (a) commercial general liability insurance with limits of not less than $5,000,000 per occurrence and $10,000,000 in the aggregate; (b) product liability insurance with limits of not less than $10,000,000 per occurrence; (c) workers' compensation insurance as required by applicable law; and (d) employer's liability insurance with limits of not less than $1,000,000 per accident. Supplier shall name Customer as an additional insured on all such policies and shall furnish certificates of insurance evidencing such coverage upon request."
+      },
+      {
+        "typeSlug": "compliance-with-laws",
+        "heading": "Compliance with Laws",
+        "text": "Each party shall comply with all applicable federal, state, local, and foreign laws, statutes, ordinances, rules, and regulations, including those relating to export control, anti-bribery, anti-money laundering, data privacy, occupational health and safety, and labor and employment. Supplier represents and warrants that the Products and the manufacture thereof comply with all applicable laws, including conflict minerals reporting requirements under Section 1502 of the Dodd-Frank Act."
+      }
+    ]
+  },
+  {
+    "filer": { "cik": "0001018724", "name": "Amazon.com, Inc.", "ticker": "AMZN", "sicCode": "5961", "sicIndustry": "Retail-Catalog & Mail-Order Houses" },
+    "contract": {
+      "accessionNumber": "0001018724-24-000031",
+      "exhibitNumber": "10.5",
+      "filingType": "10-K",
+      "filingDate": "2024-02-02",
+      "title": "Demo: Logistics Services Agreement",
+      "sourceUrl": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001018724",
+      "counterparty": "Logistics Co.",
+      "governingLaw": "Washington"
+    },
+    "clauses": [
+      {
+        "typeSlug": "termination-for-convenience",
+        "heading": "Termination for Convenience",
+        "text": "Customer may terminate this Agreement, in whole or in part, for any reason or no reason, upon thirty (30) days' prior written notice to Service Provider. Upon any such termination, Customer shall pay Service Provider for services properly performed and accepted as of the effective date of termination, plus any non-cancellable, reasonable, and documented out-of-pocket costs that Service Provider has incurred in reliance on this Agreement, subject to Service Provider's obligation to mitigate."
+      },
+      {
+        "typeSlug": "term-and-renewal",
+        "heading": "Term and Renewal",
+        "text": "The initial term of this Agreement shall commence on the Effective Date and continue for three (3) years (the \"Initial Term\"). Thereafter, this Agreement shall automatically renew for successive one (1) year periods (each a \"Renewal Term\"), unless either party provides written notice of non-renewal at least ninety (90) days prior to the end of the then-current term. The Initial Term and any Renewal Terms shall collectively be referred to as the \"Term\"."
+      },
+      {
+        "typeSlug": "assignment",
+        "heading": "Assignment",
+        "text": "Neither party may assign this Agreement, in whole or in part, without the prior written consent of the other party; provided, however, that either party may assign this Agreement, without consent, to an affiliate or to a successor in connection with a merger, acquisition, corporate reorganization, or sale of all or substantially all of its assets. Any attempted assignment in violation of this Section shall be null and void. This Agreement shall be binding upon and inure to the benefit of the parties and their permitted successors and assigns."
+      },
+      {
+        "typeSlug": "notices",
+        "heading": "Notices",
+        "text": "All notices required or permitted under this Agreement shall be in writing and shall be deemed given upon (a) personal delivery; (b) the next business day after deposit with a nationally recognized overnight courier; (c) the third business day after mailing by certified mail, return receipt requested; or (d) upon confirmed delivery by electronic mail to the addresses set forth on the signature page (or such other address as a party may designate by notice in accordance with this Section)."
+      },
+      {
+        "typeSlug": "entire-agreement",
+        "heading": "Entire Agreement",
+        "text": "This Agreement, together with all schedules and exhibits attached hereto, constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior and contemporaneous agreements, proposals, representations, and understandings, whether written or oral. No modification, amendment, or waiver of any provision of this Agreement shall be effective unless in writing and signed by an authorized representative of each party."
+      },
+      {
+        "typeSlug": "severability",
+        "heading": "Severability",
+        "text": "If any provision of this Agreement is held to be invalid, illegal, or unenforceable by a court of competent jurisdiction, the remaining provisions shall remain in full force and effect, and the parties shall negotiate in good faith to replace the invalid provision with a valid one that most closely reflects the original intent of the parties."
+      }
+    ]
+  }
+]
