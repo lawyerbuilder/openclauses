@@ -8,8 +8,19 @@ export const metadata = {
 };
 
 const MCP_URL = "https://scg-openclauses.vercel.app/api/mcp";
+const OPENAPI_URL = "https://scg-openclauses.vercel.app/openapi.json";
 
 const CLAUDE_CODE_CMD = `claude mcp add --transport http openclauses ${MCP_URL}`;
+
+const GPT_INSTRUCTIONS = `You are SCG OpenClauses, a research assistant for lawyers at SCG Legal.
+
+When a user describes a contract situation or asks about a clause:
+1. If unsure which clause type fits, call listClauseTypes first to see the taxonomy.
+2. Use searchClauses with a precise query, optionally filtered by clause type.
+3. When citing a clause, link to its detailUrl so the user can read the full text.
+4. For "what kind of agreement?" questions, call listAgreementTypes first.
+5. Be direct. Cite specific clauses with id numbers. Never make up clauses.
+6. Always include the disclaimer: "Not legal advice — these are reference clauses from public SEC filings."`;
 
 const DESKTOP_JSON = `{
   "mcpServers": {
@@ -170,6 +181,153 @@ export default function ConnectPage() {
           across every project. After it&apos;s added, close and reopen your{" "}
           <code className="rounded bg-secondary px-1 py-0.5">claude</code> session for it to be
           picked up.
+        </p>
+      </section>
+
+      {/* ChatGPT Custom GPT */}
+      <section className="surface p-6 sm:p-7 mb-6">
+        <div className="flex items-baseline justify-between gap-3 mb-2">
+          <h2 className="text-lg font-semibold tracking-tight">ChatGPT (Custom GPT)</h2>
+          <span className="eyebrow">Plus / Team / Enterprise</span>
+        </div>
+        <p className="text-sm text-muted-foreground mb-5">
+          Build a Custom GPT once. Share the link with the SCG Legal team so everyone gets the same
+          assistant.
+        </p>
+
+        <ol className="space-y-3 text-sm">
+          <li className="flex gap-3">
+            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums">
+              1
+            </span>
+            <div className="flex-1">
+              Open{" "}
+              <a
+                href="https://chatgpt.com/gpts/editor"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-primary hover:underline font-medium inline-flex items-center gap-1"
+              >
+                chatgpt.com/gpts/editor
+                <ExternalLink className="h-3 w-3" />
+              </a>
+              . Click <strong className="font-semibold">Create</strong>.
+            </div>
+          </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums">
+              2
+            </span>
+            <div className="flex-1">
+              Switch to the <strong className="font-semibold">Configure</strong> tab. Name it{" "}
+              <em>SCG OpenClauses</em>. Optionally upload a logo.
+            </div>
+          </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums">
+              3
+            </span>
+            <div className="flex-1">
+              In the <strong className="font-semibold">Instructions</strong> box, paste:
+              <div className="mt-2 surface p-3 flex items-start gap-2">
+                <pre className="flex-1 text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap">
+                  {GPT_INSTRUCTIONS}
+                </pre>
+                <CopyButton text={GPT_INSTRUCTIONS} label="Copy" />
+              </div>
+            </div>
+          </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums">
+              4
+            </span>
+            <div className="flex-1">
+              Scroll down to <strong className="font-semibold">Actions</strong> →{" "}
+              <strong className="font-semibold">Create new action</strong>. In the{" "}
+              <strong className="font-semibold">Schema</strong> section, click{" "}
+              <strong className="font-semibold">Import from URL</strong> and paste:
+              <div className="mt-2 surface p-3 flex items-center gap-2">
+                <code className="flex-1 text-xs font-mono text-foreground break-all">
+                  {OPENAPI_URL}
+                </code>
+                <CopyButton text={OPENAPI_URL} label="Copy" />
+              </div>
+            </div>
+          </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums">
+              5
+            </span>
+            <div className="flex-1">
+              Authentication: <strong className="font-semibold">None</strong> (clauses are public).
+              Privacy policy URL: any URL works; you can paste{" "}
+              <code className="rounded bg-secondary px-1 py-0.5">
+                https://scg-openclauses.vercel.app/about
+              </code>
+              .
+            </div>
+          </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums">
+              6
+            </span>
+            <div className="flex-1">
+              Click <strong className="font-semibold">Create</strong> (top right). Choose{" "}
+              <strong className="font-semibold">Only me</strong> to test, then later switch to{" "}
+              <strong className="font-semibold">Anyone with the link</strong> and share with the SCG
+              Legal team.
+            </div>
+          </li>
+        </ol>
+
+        <p className="mt-5 text-xs text-muted-foreground">
+          Built on the public{" "}
+          <a
+            href={OPENAPI_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="hover:text-foreground underline"
+          >
+            OpenAPI spec
+          </a>
+          . Read-only — your GPT can only search and fetch clauses, never modify the library.
+        </p>
+      </section>
+
+      {/* Other tools — honest about what's not supported */}
+      <section className="surface p-6 sm:p-7 mb-6">
+        <h2 className="text-lg font-semibold tracking-tight mb-2">
+          Gemini, Perplexity, M365 Copilot
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          These tools don&apos;t currently expose a way for end users to add custom APIs from their
+          consumer chat interfaces. Two workarounds:
+        </p>
+        <ol className="space-y-2 text-sm pl-5 list-decimal marker:text-muted-foreground">
+          <li>
+            Use{" "}
+            <Link href="/" className="text-primary hover:underline font-medium">
+              the SCG OpenClauses web app
+            </Link>{" "}
+            directly, then paste any clause text into your preferred tool.
+          </li>
+          <li>
+            Use Claude or ChatGPT for OpenClauses-driven research, then bring the answer back to
+            Gemini/Perplexity for whatever you&apos;re drafting.
+          </li>
+        </ol>
+        <p className="mt-4 text-xs text-muted-foreground">
+          We&apos;ll add native integrations as these platforms ship plugin/connector frameworks.
+          The same{" "}
+          <a
+            href={OPENAPI_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="hover:text-foreground underline"
+          >
+            OpenAPI spec
+          </a>{" "}
+          will work the moment they support it.
         </p>
       </section>
 

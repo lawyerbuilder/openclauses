@@ -32,8 +32,10 @@ export function parseExhibitToClauses(html: string): ParsedClause[] {
   const clauses: ParsedClause[] = [];
   let current: ParsedClause | null = null;
 
-  for (const line of lines) {
-    if (isHeading(line)) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const nextLine = lines[i + 1];
+    if (isHeading(line, nextLine)) {
       if (current && wordCount(current.text) >= 25) clauses.push(current);
       current = { heading: cleanHeading(line), text: "" };
     } else {
@@ -58,9 +60,25 @@ const HEADING_PATTERNS = [
   /^\d+(\.\d+)?\.?\s+[A-Z][A-Za-z' \-]{2,80}\.?$/,
 ];
 
-function isHeading(line: string): boolean {
+// Words that should never end a real heading — they're mid-sentence connectors.
+// "23.4 If a" / "23.3 The" used to slip through the numbered-heading regex
+// because they happened to start a continuation line.
+const TRAILING_NON_HEADING_WORD = /\s+(a|an|the|of|in|on|at|to|for|by|with|from|and|or|but|if|when|while|as|that|which|who|whom|whose|where|why|how|so|nor|yet|both|either|neither|not|no|may|will|shall|should|would|could|must|can|is|are|was|were|be|been|being|have|has|had|do|does|did|its|their|his|her|our|your)$/i;
+
+function isHeading(line: string, nextLine?: string): boolean {
   if (line.length < 4 || line.length > 100) return false;
+
+  // Reject mid-sentence breaks. A real heading does not end with an article,
+  // preposition, conjunction, or auxiliary verb.
+  if (TRAILING_NON_HEADING_WORD.test(line)) return false;
+
+  // Reject when the next line clearly continues the same sentence (starts
+  // lowercase, no leading numbering). "23.4 Termination" followed by "for cause"
+  // is not really a heading.
+  if (nextLine && /^[a-z]/.test(nextLine)) return false;
+
   if (HEADING_PATTERNS.some((re) => re.test(line))) return true;
+
   // ALL CAPS short line, mostly letters
   const letters = line.replace(/[^A-Za-z]/g, "");
   if (
