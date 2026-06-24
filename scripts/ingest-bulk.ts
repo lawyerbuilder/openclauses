@@ -33,6 +33,16 @@ const CONCURRENCY = Math.max(1, Number(process.env.INGEST_CONCURRENCY ?? 3));
 const PAGES_PER_QUERY = Math.max(1, Number(process.env.INGEST_PAGES_PER_QUERY ?? 5));
 const PAGE_SIZE = 100; // EDGAR's fixed page size
 
+// Filter strategies by slug (comma-separated) or by category. Use either to
+// run targeted ingestion without re-walking the full list.
+//   INGEST_ONLY=epc,solar-ppa,ppa            (specific slugs)
+//   INGEST_CATEGORY="Construction & Energy"  (whole category)
+const ONLY_SLUGS = (process.env.INGEST_ONLY ?? "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+const ONLY_CATEGORY = (process.env.INGEST_CATEGORY ?? "").trim();
+
 type Cursor = {
   queryIdx: number;
   page: number; // 0, 1, 2, …
@@ -46,10 +56,29 @@ async function main() {
   const startedAt = Date.now();
   const deadline = startedAt + MAX_MINUTES * 60_000;
 
+  // Build the active strategy list. Honor INGEST_ONLY (slugs) and
+  // INGEST_CATEGORY filters when set; otherwise use all strategies.
+  const strategies = QUERIES.filter((q) => {
+    if (ONLY_SLUGS.length > 0 && !ONLY_SLUGS.includes(q.id)) return false;
+    if (ONLY_CATEGORY && q.category !== ONLY_CATEGORY) return false;
+    return true;
+  });
+
+  if (strategies.length === 0) {
+    console.error("No matching query strategies. Check INGEST_ONLY / INGEST_CATEGORY.");
+    process.exit(1);
+  }
+
   console.log(
-    `→ Bulk ingest: ${QUERIES.length} query strategies × up to ${PAGES_PER_QUERY} pages, ` +
+    `→ Bulk ingest: ${strategies.length} query strategies × up to ${PAGES_PER_QUERY} pages, ` +
       `budget ${MAX_MINUTES} min / ${MAX_CONTRACTS} new contracts, concurrency ${CONCURRENCY}`
   );
+  if (ONLY_SLUGS.length > 0 || ONLY_CATEGORY) {
+    console.log(
+      `  · Filtered: ${ONLY_SLUGS.length > 0 ? `slugs=${ONLY_SLUGS.join(",")}` : ""}` +
+        `${ONLY_CATEGORY ? ` category="${ONLY_CATEGORY}"` : ""}`
+    );
+  }
 
   const sql = neon(url);
   const db = drizzle(sql);
@@ -75,7 +104,7 @@ async function main() {
 
   // Round-robin cursor — page through query 0, then query 1, …, then back to
   // query 0 page 1, … This produces breadth before depth.
-  const cursors: Cursor[] = QUERIES.map((_, i) => ({
+  const cursors: Cursor[] = strategies.map((_, i) => ({
     queryIdx: i,
     page: 0,
     emptyPagesInARow: 0,
@@ -89,7 +118,7 @@ async function main() {
 
     // Take the first cursor (FIFO round-robin).
     const cursor = cursors.shift()!;
-    const strategy = QUERIES[cursor.queryIdx];
+    const strategy = strategies[cursor.queryIdx];
 
     let hits;
     try {

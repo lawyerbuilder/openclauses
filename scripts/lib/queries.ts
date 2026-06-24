@@ -10,7 +10,14 @@ export type QueryStrategy = {
   /** Short description shown on category pages. */
   description?: string;
   /** Category grouping for the /agreements landing page. */
-  category: "Commercial" | "Financing" | "Corporate" | "Employment" | "IP & Confidentiality" | "Dispute";
+  category:
+    | "Commercial"
+    | "Financing"
+    | "Corporate"
+    | "Employment"
+    | "IP & Confidentiality"
+    | "Dispute"
+    | "Construction & Energy";
   /** EDGAR full-text search phrase (quoted = exact match). */
   query: string;
   /** EDGAR filing forms to search across. */
@@ -94,6 +101,24 @@ export const QUERIES: QueryStrategy[] = [
 
   // Additional IP
   { id: "patent-license",   name: "Patent License Agreement",  category: "IP & Confidentiality", description: "Patent license, cross-license, and patent-pool agreements.",                                          query: `"patent license agreement"`,            forms: ["10-K", "10-Q", "8-K"] },
+
+  // Construction & Energy — EPC and renewable energy contracts (highly relevant for SCG's industrial business)
+  { id: "epc",              name: "EPC Agreement",                         category: "Construction & Energy", description: "Engineering, procurement, and construction agreements for turnkey infrastructure builds — power plants, refineries, industrial facilities.",  query: `"engineering procurement and construction"`,    forms: ["10-K", "10-Q", "8-K"] },
+  { id: "epc-contract",     name: "EPC Contract",                          category: "Construction & Energy", description: "EPC contracts with explicit comma punctuation in the title.",                                                                                  query: `"engineering, procurement and construction"`,   forms: ["10-K", "10-Q", "8-K"] },
+  { id: "construction",     name: "Construction Contract",                 category: "Construction & Energy", description: "General construction and civil works contracts.",                                                                                              query: `"construction contract"`,                       forms: ["10-K", "10-Q", "8-K"] },
+  { id: "construction-mgmt", name: "Construction Management Agreement",    category: "Construction & Energy", description: "Construction-management agreements between owners and CM firms.",                                                                              query: `"construction management agreement"`,           forms: ["10-K", "10-Q", "8-K"] },
+  { id: "design-build",     name: "Design-Build Agreement",                category: "Construction & Energy", description: "Design-build delivery-method contracts combining design and construction under one contractor.",                                                query: `"design build agreement"`,                      forms: ["10-K", "10-Q", "8-K"] },
+  { id: "ppa",              name: "Power Purchase Agreement",              category: "Construction & Energy", description: "Long-term offtake agreements for electricity from generation projects.",                                                                       query: `"power purchase agreement"`,                    forms: ["10-K", "10-Q", "8-K"] },
+  { id: "solar-ppa",        name: "Solar Power Purchase Agreement",        category: "Construction & Energy", description: "PPAs specific to solar generation, including utility-scale and rooftop projects.",                                                              query: `"solar power purchase agreement"`,              forms: ["10-K", "10-Q", "8-K"] },
+  { id: "solar-services",   name: "Solar Services Agreement",              category: "Construction & Energy", description: "Solar services and energy-as-a-service agreements covering installation, O&M, and offtake.",                                                    query: `"solar services agreement"`,                    forms: ["10-K", "10-Q", "8-K"] },
+  { id: "solar-lease",      name: "Solar Lease Agreement",                 category: "Construction & Energy", description: "Site and rooftop leases for solar generation installations.",                                                                                  query: `"solar lease agreement"`,                       forms: ["10-K", "10-Q", "8-K"] },
+  { id: "interconnection",  name: "Interconnection Agreement",             category: "Construction & Energy", description: "Grid interconnection agreements between generators and utilities or RTOs/ISOs.",                                                               query: `"interconnection agreement"`,                   forms: ["10-K", "10-Q", "8-K"] },
+  { id: "om-energy",        name: "Operations & Maintenance Agreement",    category: "Construction & Energy", description: "Long-term O&M agreements for power plants, solar farms, wind farms, and industrial facilities.",                                                query: `"operations and maintenance agreement"`,        forms: ["10-K", "10-Q", "8-K"] },
+  { id: "energy-services",  name: "Energy Services Agreement",             category: "Construction & Energy", description: "Energy management, demand-response, and energy-services agreements.",                                                                          query: `"energy services agreement"`,                   forms: ["10-K", "10-Q", "8-K"] },
+  { id: "engineering",      name: "Engineering Services Agreement",        category: "Construction & Energy", description: "Standalone engineering and consulting agreements for infrastructure projects.",                                                                 query: `"engineering services agreement"`,              forms: ["10-K", "10-Q", "8-K"] },
+  { id: "site-lease",       name: "Site Lease Agreement",                  category: "Construction & Energy", description: "Site leases for industrial and energy generation facilities.",                                                                                  query: `"site lease agreement"`,                        forms: ["10-K", "10-Q", "8-K"] },
+  { id: "oem",              name: "OEM Agreement",                         category: "Construction & Energy", description: "Original Equipment Manufacturer agreements — branded manufacturing arrangements common in semiconductors, automotive, electronics, and industrial equipment.", query: `"OEM agreement"`,                            forms: ["10-K", "10-Q", "8-K"] },
+  { id: "oem-supply",       name: "OEM Supply Agreement",                  category: "Construction & Energy", description: "OEM-flavored supply agreements where the manufacturer supplies branded components or finished goods.",                                          query: `"original equipment manufacturer agreement"`,   forms: ["10-K", "10-Q", "8-K"] },
 ];
 
 export const QUERY_BY_SLUG = new Map(QUERIES.map((q) => [q.id, q]));
