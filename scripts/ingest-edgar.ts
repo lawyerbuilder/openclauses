@@ -13,7 +13,7 @@ import {
 } from "./lib/edgar";
 import { parseExhibitToClauses, wordCount } from "./lib/parse-clauses";
 import { classifyClause } from "./lib/classify";
-import { makeLlmClassifier } from "./lib/classify-llm";
+import { makeLlmClassifier, describeLlmBackend } from "./lib/classify-llm";
 
 async function main() {
   const url = process.env.DATABASE_URL;
@@ -32,12 +32,12 @@ async function main() {
     throw new Error("No clause types in DB. Run `npm run seed` first to seed the taxonomy.");
   }
 
-  // Optional LLM classifier — used only when AI Gateway credentials are present.
+  // Optional LLM classifier — used only when GROQ_API_KEY or gateway credentials are present.
   const llmClassify = makeLlmClassifier(Array.from(typeBySlug.keys()));
   console.log(
     llmClassify
-      ? "  ✓ LLM classifier enabled (Groq via Vercel AI Gateway)"
-      : "  · LLM classifier disabled (no AI_GATEWAY_API_KEY) — keyword rules only"
+      ? `  ✓ LLM classifier enabled (${describeLlmBackend()})`
+      : "  · LLM classifier disabled (no GROQ_API_KEY / AI_GATEWAY_API_KEY) — keyword rules only"
   );
 
   const hits = await searchMaterialContractExhibits({ limit: maxFilings * 2 });

@@ -1,17 +1,18 @@
 // LLM-based clause-type classifier.
 //
-// Uses the AI SDK with a Vercel AI Gateway model id ("provider/model"). On Vercel
-// this works automatically via OIDC; locally you need AI_GATEWAY_API_KEY set.
-// We default to Groq's Llama 3.3 70B — fast and free-tier-friendly for batch jobs.
+// Two backends, picked in priority order:
+//   1. Direct Groq (set GROQ_API_KEY) — free tier at console.groq.com, no card.
+//   2. Vercel AI Gateway (set AI_GATEWAY_API_KEY or run on Vercel itself) —
+//      unified billing, observability, fallbacks.
 //
-// Returns null if the model can't pick a confident type or if AI_GATEWAY isn't
-// configured — caller should fall back to keyword classification.
+// Returns null if neither is configured — caller falls back to keyword rules.
 
 import { generateObject } from "ai";
+import { createGroq } from "@ai-sdk/groq";
 import { z } from "zod";
 
-const DEFAULT_MODEL =
-  process.env.OPENCLAUSES_CLASSIFIER_MODEL ?? "groq/llama-3.3-70b-versatile";
+const MODEL_ID =
+  process.env.OPENCLAUSES_CLASSIFIER_MODEL ?? "llama-3.3-70b-versatile";
 
 let cachedSchema: z.ZodObject<{ slug: z.ZodEnum<[string, ...string[]]>; confidence: z.ZodNumber }> | null = null;
 
@@ -29,17 +30,19 @@ export type LlmClassifier = (
   body: string
 ) => Promise<string | null>;
 
-/**
- * Build an LLM classifier bound to a closed taxonomy of clause-type slugs.
- * Returns null synchronously if no AI credentials are present — caller can
- * use this to decide whether to wire the LLM path at all.
- */
 export function makeLlmClassifier(slugs: string[]): LlmClassifier | null {
+  const groqKey = process.env.GROQ_API_KEY;
   const hasGateway =
     !!process.env.AI_GATEWAY_API_KEY ||
     !!process.env.VERCEL_OIDC_TOKEN ||
     process.env.VERCEL === "1";
-  if (!hasGateway) return null;
+
+  if (!groqKey && !hasGateway) return null;
+
+  // Direct Groq wins when both are present — it's the cheaper path.
+  const model = groqKey
+    ? createGroq({ apiKey: groqKey })(MODEL_ID)
+    : (`groq/${MODEL_ID}` as const);
 
   const schema = buildSchema(slugs);
 
@@ -56,7 +59,7 @@ export function makeLlmClassifier(slugs: string[]): LlmClassifier | null {
 
     try {
       const { object } = await generateObject({
-        model: DEFAULT_MODEL,
+        model,
         schema,
         prompt,
       });
@@ -66,4 +69,17 @@ export function makeLlmClassifier(slugs: string[]): LlmClassifier | null {
       return null;
     }
   };
+}
+
+/** Reports which backend would be used. Useful for the ingestion run banner. */
+export function describeLlmBackend(): string {
+  if (process.env.GROQ_API_KEY) return "Groq (direct, console.groq.com)";
+  if (
+    process.env.AI_GATEWAY_API_KEY ||
+    process.env.VERCEL_OIDC_TOKEN ||
+    process.env.VERCEL === "1"
+  ) {
+    return "Groq via Vercel AI Gateway";
+  }
+  return "disabled";
 }
