@@ -41,19 +41,19 @@ export default async function ClauseDetailPage({ params }: Props) {
   const peers = peerResult.rows as Array<{ id: number; heading: string | null; position: number }>;
 
   return (
-    <div className="container py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10">
+    <div className="container py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12">
         <article>
-          <nav className="text-xs text-muted-foreground mb-3 flex flex-wrap items-center gap-1.5">
-            <Link href="/" className="hover:text-foreground">Home</Link>
-            <span>/</span>
-            <Link href="/clauses" className="hover:text-foreground">Clauses</Link>
+          <nav className="text-xs text-muted-foreground mb-4 flex flex-wrap items-center gap-1.5">
+            <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+            <span className="text-border">/</span>
+            <Link href="/clauses" className="hover:text-foreground transition-colors">Clauses</Link>
             {clause.clauseTypeSlug && clause.clauseTypeName && (
               <>
-                <span>/</span>
+                <span className="text-border">/</span>
                 <Link
                   href={`/clauses?type=${clause.clauseTypeSlug}`}
-                  className="hover:text-foreground"
+                  className="hover:text-foreground transition-colors"
                 >
                   {clause.clauseTypeName}
                 </Link>
@@ -61,40 +61,48 @@ export default async function ClauseDetailPage({ params }: Props) {
             )}
           </nav>
 
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
+          {clause.clauseTypeName && (
+            <p className="eyebrow mb-2">{clause.clauseTypeName}</p>
+          )}
+          <h1 className="text-[1.75rem] sm:text-[2.125rem] font-semibold tracking-tight leading-tight">
             {clause.heading?.trim() || "Untitled clause"}
           </h1>
 
-          <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">{clause.filerName}</span>
-            {clause.ticker ? <span>({clause.ticker})</span> : null}
-            <span aria-hidden>·</span>
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">{clause.filerName}</span>
+            {clause.ticker ? (
+              <span className="text-xs tabular-nums">({clause.ticker})</span>
+            ) : null}
+            <span className="text-border">·</span>
             <span>{clause.filingType}</span>
-            <span aria-hidden>·</span>
-            <span>{formatDate(clause.filingDate)}</span>
+            <span className="text-border">·</span>
+            <span className="tabular-nums">{formatDate(clause.filingDate)}</span>
           </div>
 
-          <div className="mt-8 prose prose-slate max-w-none">
-            <div className="clause-prose text-[15px] text-foreground/90">{clause.text}</div>
+          <div className="mt-10 surface p-7 sm:p-9">
+            <div className="clause-prose text-foreground/90">{clause.text}</div>
           </div>
 
           {related.length > 0 && (
             <section className="mt-16">
-              <h2 className="text-lg font-semibold mb-4">
-                More {clause.clauseTypeName ?? "similar"} clauses
-              </h2>
+              <div className="mb-5">
+                <p className="eyebrow mb-1">Compare</p>
+                <h2 className="text-lg font-semibold tracking-tight">
+                  More {clause.clauseTypeName ?? "similar"} clauses
+                </h2>
+              </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {related.map((r) => (
                   <Link
                     key={r.id}
                     href={`/clauses/${r.id}`}
-                    className="rounded-lg border bg-card p-4 hover:border-foreground/20 transition"
+                    className="surface surface-hover p-4"
                   >
-                    <div className="font-medium text-sm leading-snug">
+                    <div className="font-semibold text-sm leading-snug tracking-tight">
                       {r.heading?.trim() || "Untitled clause"}
                     </div>
-                    <div className="mt-1 text-xs text-muted-foreground">{r.filerName}</div>
-                    <div className="mt-2 text-xs text-muted-foreground line-clamp-3">
+                    <div className="mt-1.5 text-xs text-muted-foreground">{r.filerName}</div>
+                    <div className="mt-2.5 text-xs text-muted-foreground leading-relaxed line-clamp-3">
                       {truncate(r.text, 200)}
                     </div>
                   </Link>
@@ -104,70 +112,68 @@ export default async function ClauseDetailPage({ params }: Props) {
           )}
         </article>
 
-        <aside className="space-y-6">
-          <section className="rounded-lg border bg-card p-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
-              Source contract
-            </h3>
+        <aside className="space-y-5">
+          <section className="surface p-5">
+            <p className="eyebrow mb-3">Source contract</p>
             <Link
               href={clause.sourceUrl}
               target="_blank"
               rel="noreferrer noopener"
-              className="text-sm font-medium hover:text-primary flex items-start gap-1.5"
+              className="text-sm font-semibold leading-snug tracking-tight hover:text-primary transition-colors flex items-start gap-1.5"
             >
               <span>{clause.contractTitle}</span>
               <ExternalLink className="h-3.5 w-3.5 mt-0.5 shrink-0 text-muted-foreground" />
             </Link>
-            <dl className="mt-4 space-y-2 text-sm">
-              <div className="flex justify-between gap-2">
+            <dl className="mt-5 space-y-2.5 text-sm">
+              <div className="flex justify-between gap-3">
                 <dt className="text-muted-foreground">Filer</dt>
-                <dd className="text-right">{clause.filerName}</dd>
+                <dd className="text-right font-medium">{clause.filerName}</dd>
               </div>
               {clause.counterparty ? (
-                <div className="flex justify-between gap-2">
+                <div className="flex justify-between gap-3">
                   <dt className="text-muted-foreground">Counterparty</dt>
-                  <dd className="text-right">{clause.counterparty}</dd>
+                  <dd className="text-right font-medium">{clause.counterparty}</dd>
                 </div>
               ) : null}
               {clause.governingLaw ? (
-                <div className="flex justify-between gap-2">
+                <div className="flex justify-between gap-3">
                   <dt className="text-muted-foreground">Governing law</dt>
-                  <dd className="text-right">{clause.governingLaw}</dd>
+                  <dd className="text-right font-medium">{clause.governingLaw}</dd>
                 </div>
               ) : null}
               {clause.sicIndustry ? (
-                <div className="flex justify-between gap-2">
+                <div className="flex justify-between gap-3">
                   <dt className="text-muted-foreground">Industry</dt>
-                  <dd className="text-right">{clause.sicIndustry}</dd>
+                  <dd className="text-right font-medium">{clause.sicIndustry}</dd>
                 </div>
               ) : null}
-              <div className="flex justify-between gap-2">
+              <div className="flex justify-between gap-3">
                 <dt className="text-muted-foreground">Filing</dt>
-                <dd className="text-right">
+                <dd className="text-right font-medium tabular-nums">
                   {clause.filingType} · {formatDate(clause.filingDate)}
                 </dd>
               </div>
-              <div className="flex justify-between gap-2">
+              <div className="flex justify-between gap-3">
                 <dt className="text-muted-foreground">Word count</dt>
-                <dd className="text-right">{clause.wordCount.toLocaleString()}</dd>
+                <dd className="text-right font-medium tabular-nums">
+                  {clause.wordCount.toLocaleString()}
+                </dd>
               </div>
             </dl>
           </section>
 
           {peers.length > 1 && (
-            <section className="rounded-lg border bg-card p-4">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
-                Other clauses in this contract
-              </h3>
-              <ul className="space-y-1.5 text-sm">
+            <section className="surface p-5">
+              <p className="eyebrow mb-3">Other clauses in this contract</p>
+              <ul className="space-y-2 text-sm">
                 {peers.map((p) => (
                   <li key={p.id}>
                     <Link
                       href={`/clauses/${p.id}`}
                       className={
                         p.id === numericId
-                          ? "font-medium"
-                          : "text-muted-foreground hover:text-foreground"
+                          ? "font-semibold text-foreground"
+                          : "text-muted-foreground hover:text-foreground transition-colors"
                       }
                     >
                       {p.heading?.trim() || `Section ${p.position}`}

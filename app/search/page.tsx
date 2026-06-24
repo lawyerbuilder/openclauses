@@ -98,15 +98,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </div>
 
         {types.length > 0 && (
-          <aside className="space-y-3">
-            <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Filter by type
-            </div>
-            <ul className="space-y-1 text-sm">
+          <aside className="space-y-3 sticky top-24">
+            <p className="eyebrow">Filter by type</p>
+            <ul className="space-y-1.5 text-sm">
               <li>
                 <Link
                   href={q ? `/search?q=${encodeURIComponent(q)}` : "/search"}
-                  className={!typeSlug ? "font-medium" : "text-muted-foreground hover:text-foreground"}
+                  className={
+                    !typeSlug
+                      ? "font-semibold text-foreground"
+                      : "text-muted-foreground hover:text-foreground transition-colors"
+                  }
                 >
                   All types
                 </Link>
@@ -121,12 +123,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     }
                     className={
                       typeSlug === t.slug
-                        ? "font-medium"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "font-semibold text-foreground"
+                        : "text-muted-foreground hover:text-foreground transition-colors"
                     }
                   >
                     {t.name}{" "}
-                    <span className="text-xs">({t.clauseCount.toLocaleString()})</span>
+                    <span className="text-xs tabular-nums opacity-70">
+                      ({t.clauseCount.toLocaleString()})
+                    </span>
                   </Link>
                 </li>
               ))}

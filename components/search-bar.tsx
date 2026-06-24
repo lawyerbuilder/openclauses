@@ -40,9 +40,12 @@ export function SearchBar({ compact = false }: { compact?: boolean }) {
             : "Search clauses — e.g. \"indemnification\", \"force majeure\", \"non-compete\""
         }
         className={cn(
-          "w-full rounded-lg border bg-card pl-10 pr-4 outline-none transition",
-          "focus:ring-2 focus:ring-ring/40 focus:border-ring",
-          compact ? "h-9 text-sm" : "h-14 text-base shadow-sm"
+          "w-full rounded-md border bg-card pl-10 pr-4 outline-none transition",
+          "placeholder:text-muted-foreground/70",
+          "focus:ring-2 focus:ring-ring/25 focus:border-ring/60",
+          compact
+            ? "h-9 text-sm border-border/70"
+            : "h-14 text-base border-border shadow-[0_1px_2px_0_rgb(45_20_15/0.04)]"
         )}
         aria-label="Search clauses"
       />

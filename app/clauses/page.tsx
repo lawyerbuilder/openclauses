@@ -102,15 +102,17 @@ export default async function BrowsePage({ searchParams }: Props) {
           )}
         </div>
 
-        <aside className="space-y-3">
-          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Clause types
-          </div>
-          <ul className="space-y-1 text-sm">
+        <aside className="space-y-3 sticky top-24">
+          <p className="eyebrow">Clause types</p>
+          <ul className="space-y-1.5 text-sm">
             <li>
               <Link
                 href="/clauses"
-                className={!typeSlug ? "font-medium" : "text-muted-foreground hover:text-foreground"}
+                className={
+                  !typeSlug
+                    ? "font-semibold text-foreground"
+                    : "text-muted-foreground hover:text-foreground transition-colors"
+                }
               >
                 All
               </Link>
