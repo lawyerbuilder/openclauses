@@ -5,6 +5,7 @@ import { QUERY_BY_SLUG } from "@/scripts/lib/queries";
 import {
   listContractsByAgreementType,
   countContractsByAgreementType,
+  listClauseTypesForAgreementType,
 } from "@/lib/search";
 import { formatDate } from "@/lib/utils";
 
@@ -33,9 +34,10 @@ export default async function AgreementTypePage({ params, searchParams }: Props)
   const page = Math.max(1, Number(pageParam ?? 1) || 1);
   const offset = (page - 1) * PAGE_SIZE;
 
-  const [contracts, total] = await Promise.all([
+  const [contracts, total, clauseTypeCounts] = await Promise.all([
     listContractsByAgreementType({ slug, limit: PAGE_SIZE, offset }),
     countContractsByAgreementType(slug),
+    listClauseTypesForAgreementType(slug, 20).catch(() => []),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -63,6 +65,26 @@ export default async function AgreementTypePage({ params, searchParams }: Props)
           {total === 1 ? "contract" : "contracts"} indexed
         </p>
       </header>
+
+      {clauseTypeCounts.length > 0 && (
+        <section className="mb-10">
+          <p className="eyebrow mb-3">Jump to clauses of type</p>
+          <div className="flex flex-wrap gap-2">
+            {clauseTypeCounts.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/clauses?type=${c.slug}&agreement=${slug}`}
+                className="rounded-full border border-border/70 bg-card px-3 py-1 text-xs font-medium text-muted-foreground hover:border-foreground/20 hover:text-foreground transition"
+              >
+                {c.name}{" "}
+                <span className="tabular-nums opacity-70">
+                  ({c.clauseCount.toLocaleString()})
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {contracts.length === 0 ? (
         <div className="surface p-6 text-sm text-muted-foreground">

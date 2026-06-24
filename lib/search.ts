@@ -194,6 +194,48 @@ export async function listClauseTypes() {
   }>;
 }
 
+/**
+ * For a given clause-type slug, count clauses per agreement_type. Used to
+ * render the "Filter by agreement type" pill row on /clauses?type=foo.
+ */
+export async function listAgreementsForClauseType(clauseTypeSlug: string, limit = 20) {
+  const result = await db.execute(sql`
+    select
+      contracts.agreement_type as slug,
+      count(*)::int as "clauseCount"
+    from clauses
+    join contracts on contracts.id = clauses.contract_id
+    join clause_types on clause_types.id = clauses.clause_type_id
+    where clause_types.slug = ${clauseTypeSlug}
+      and contracts.agreement_type is not null
+    group by contracts.agreement_type
+    order by "clauseCount" desc
+    limit ${limit}
+  `);
+  return result.rows as Array<{ slug: string; clauseCount: number }>;
+}
+
+/**
+ * Symmetric helper — for a given agreement_type slug, count clauses per
+ * clause_type. Used on /agreements/[type] to filter by what kind of clauses.
+ */
+export async function listClauseTypesForAgreementType(agreementSlug: string, limit = 30) {
+  const result = await db.execute(sql`
+    select
+      clause_types.slug,
+      clause_types.name,
+      count(*)::int as "clauseCount"
+    from clauses
+    join contracts on contracts.id = clauses.contract_id
+    join clause_types on clause_types.id = clauses.clause_type_id
+    where contracts.agreement_type = ${agreementSlug}
+    group by clause_types.slug, clause_types.name
+    order by "clauseCount" desc
+    limit ${limit}
+  `);
+  return result.rows as Array<{ slug: string; name: string; clauseCount: number }>;
+}
+
 export async function listAgreementTypeCounts() {
   const result = await db.execute(sql`
     select

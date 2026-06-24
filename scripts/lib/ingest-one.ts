@@ -133,7 +133,9 @@ export function deriveTitle(
 
 function cleanTitle(s: string): string {
   return s
-    .replace(/[^A-Za-z0-9 ,\-&]/g, " ")
+    // Keep alphanumeric, spaces, commas, hyphens, ampersands, AND periods (for
+    // section numbers like "9.4 Contract") and slashes (for "9/4 Contract").
+    .replace(/[^A-Za-z0-9 ,\-&./]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 200);
