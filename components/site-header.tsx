@@ -52,7 +52,7 @@ export function SiteHeader() {
                 className="h-1.5 w-1.5 rounded-full bg-primary"
                 aria-hidden
               />
-              Use from Claude
+              Use from AI
             </Link>
             <Link
               href="/about"

@@ -91,7 +91,8 @@ export default async function HomePage() {
         >
           <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden />
           <span>
-            Or use it from <span className="text-foreground font-medium">Claude</span> directly
+            Or use it from{" "}
+            <span className="text-foreground font-medium">Claude or ChatGPT</span> directly
           </span>
           <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
         </Link>

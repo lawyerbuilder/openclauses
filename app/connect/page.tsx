@@ -3,8 +3,10 @@ import { ArrowRight, ExternalLink, Sparkles } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 
 export const metadata = {
-  title: "Connect to Claude",
-  description: "Use SCG OpenClauses from Claude with Model Context Protocol.",
+  title: "Use from AI",
+  description:
+    "Use SCG OpenClauses from Claude, ChatGPT, and other AI assistants. " +
+    "MCP server and OpenAPI spec — connect in two minutes.",
 };
 
 const MCP_URL = "https://scg-openclauses.vercel.app/api/mcp";
@@ -45,12 +47,14 @@ export default function ConnectPage() {
       <header className="mb-12">
         <p className="eyebrow mb-2">Integration</p>
         <h1 className="text-[2.25rem] font-semibold tracking-tight leading-tight">
-          Use SCG OpenClauses from Claude
+          Use SCG OpenClauses from your AI
         </h1>
         <p className="mt-3 text-muted-foreground leading-relaxed">
-          OpenClauses runs an <strong className="text-foreground font-semibold">MCP server</strong>{" "}
-          (Model Context Protocol). Connect any MCP-aware Claude — claude.ai web, Claude Desktop,
-          Claude Code — and ask the library questions directly. Below are the exact steps for each.
+          OpenClauses exposes two integration surfaces: an{" "}
+          <strong className="text-foreground font-semibold">MCP server</strong> for Claude (web,
+          Desktop, Code) and an{" "}
+          <strong className="text-foreground font-semibold">OpenAPI spec</strong> for ChatGPT Custom
+          GPTs. Pick the matching section below.
         </p>
       </header>
 
