@@ -70,6 +70,19 @@ export default function AboutPage() {
               aria-hidden
             />
             <p>
+              <strong className="font-semibold">
+                Intended for the internal use of SCG personnel only.
+              </strong>{" "}
+              SCG OpenClauses is provided primarily for lawyers and compliance professionals at
+              SCG Legal as a research and reference tool.
+            </p>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <span
+              className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+              aria-hidden
+            />
+            <p>
               <strong className="font-semibold">SCG OpenClauses is not legal advice.</strong>{" "}
               Clauses are reproduced for reference, research, and education only. Always consult
               qualified counsel before drafting or relying on contract language.
@@ -81,12 +94,18 @@ export default function AboutPage() {
               aria-hidden
             />
             <p>
-              This project is open source and is not affiliated with the U.S. Securities and
-              Exchange Commission, Law Insider, or any commercial clause-library service. While it
-              was built primarily to serve the lawyers at SCG Legal, the code and the data it
-              surfaces are public.
+              No warranty; no liability. The Platform is provided "as is." This project is not
+              affiliated with the U.S. Securities and Exchange Commission, Law Insider, or any
+              commercial clause-library service.
             </p>
           </div>
+          <p className="text-sm pt-1">
+            See the full{" "}
+            <Link href="/terms" className="text-primary hover:underline font-medium">
+              Terms of Use
+            </Link>{" "}
+            for complete details.
+          </p>
         </div>
 
         <p className="pt-6 text-sm text-muted-foreground">

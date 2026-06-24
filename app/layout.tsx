@@ -24,12 +24,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span className="eyebrow text-foreground/80">SCG OpenClauses</span>
             </div>
             <p className="max-w-3xl leading-relaxed">
-              An open-source clause library built primarily for the lawyers at SCG Legal. Clauses are
-              extracted from public SEC EDGAR filings and presented for reference and research only.
-              Not legal advice; not affiliated with the U.S. Securities and Exchange Commission,
-              Law Insider, or any commercial clause-library service.
+              <strong className="text-foreground font-medium">
+                Intended for the internal use of SCG personnel only.
+              </strong>{" "}
+              An open-source clause library built primarily for the lawyers at SCG Legal. Clauses
+              are extracted from public SEC EDGAR filings and presented for reference and research
+              only. <strong className="text-foreground font-medium">Not legal advice.</strong> No
+              warranty; no liability. Not affiliated with the U.S. Securities and Exchange
+              Commission, Law Insider, or any commercial clause-library service.
             </p>
             <p className="mt-4 text-xs">
+              <a href="/terms" className="hover:text-foreground transition-colors">
+                Terms of Use
+              </a>
+              <span className="mx-2 text-border">·</span>
+              <a href="/about" className="hover:text-foreground transition-colors">
+                About
+              </a>
+              <span className="mx-2 text-border">·</span>
               <a
                 href="https://github.com/lawyerbuilder/openclauses"
                 className="hover:text-foreground transition-colors"
@@ -37,10 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 rel="noreferrer noopener"
               >
                 Source on GitHub
-              </a>
-              <span className="mx-2 text-border">·</span>
-              <a href="/about" className="hover:text-foreground transition-colors">
-                About
               </a>
             </p>
           </div>

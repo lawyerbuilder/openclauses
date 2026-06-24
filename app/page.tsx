@@ -39,7 +39,7 @@ export default async function HomePage() {
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           <span className="text-foreground">SCG Legal</span>
           <span className="text-border">·</span>
-          <span>Open-source clause library</span>
+          <span>Internal use only</span>
         </div>
 
         <h1 className="text-[2.5rem] sm:text-[3.25rem] font-semibold tracking-tight leading-[1.05] text-balance">
