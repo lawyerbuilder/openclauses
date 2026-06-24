@@ -69,11 +69,30 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### 6. Ingest real clauses
 
+Two ingestion modes, pick the one that matches your goal:
+
+**A. Quick one-shot — `npm run ingest:edgar`** — single EDGAR full-text query (the default `"material contract"`), top N results. Good for smoke-testing setup. Tune with `EDGAR_MAX_FILINGS=N`.
+
+**B. Bulk ingest — `npm run ingest:bulk`** — round-robins through 30 query strategies (supply / credit / merger / employment / IP / settlement / etc.) and paginates each. This is what builds real breadth. Budgets:
+
+| Env var | Default | Purpose |
+|---|---|---|
+| `INGEST_MAX_MINUTES` | 30 | Wall-clock stop |
+| `INGEST_MAX_CONTRACTS` | 200 | Stop after N *new* contracts |
+| `INGEST_CONCURRENCY` | 3 | Parallel exhibit downloads (SEC's published cap is 10 req/s) |
+| `INGEST_PAGES_PER_QUERY` | 5 | EDGAR pages of 100 results to walk per query |
+
+Ctrl+C is safe — it lets in-flight work finish, then exits. Restart picks up where it left off because the contracts table uses `(accession_number, exhibit_number)` as a unique key. Examples:
+
 ```bash
-EDGAR_MAX_FILINGS=15 npm run ingest:edgar
+# small test (~5 min, ~25 new contracts)
+INGEST_MAX_MINUTES=5 INGEST_MAX_CONTRACTS=25 npm run ingest:bulk
+
+# overnight breadth run
+INGEST_MAX_MINUTES=600 INGEST_MAX_CONTRACTS=2000 npm run ingest:bulk
 ```
 
-This queries SEC EDGAR full-text search for recent material-contract exhibits (Exhibit 10.x of 10-K / 10-Q / 8-K filings), pulls the HTML, splits each into clauses by heading patterns, classifies them, and upserts into Postgres. Rerun any time — already-ingested accession numbers are skipped.
+Both modes pull exhibit HTML, split by heading patterns, classify each clause, and upsert into Postgres. Already-ingested accession numbers are deduped silently.
 
 Classification has two paths:
 - **Default (keyword rules)** — fast, free, no setup. Works fine for headings like "INDEMNIFICATION" or "Section 8. Confidentiality"; misses creative headings.
@@ -141,6 +160,55 @@ scripts/
 drizzle/0000_init.sql   # initial schema
 vercel.ts               # typed project config (vercel.json replacement)
 ```
+
+## Use it from Claude (or any MCP client)
+
+OpenClauses exposes itself as an MCP server at **`/api/mcp`**. Once your project is deployed, any MCP-compatible AI client can call it. No auth required (clauses are public).
+
+### Tools exposed
+
+| Tool | Purpose |
+|---|---|
+| `search_clauses(query, type?, limit?)` | Full-text search with highlighted snippets |
+| `get_clause(id)` | Full clause text + complete source attribution |
+| `list_clause_types()` | The 27-slug taxonomy with per-type clause counts |
+| `find_similar_clauses(clause_id, limit?)` | Other clauses of the same type — compare drafts |
+| `list_recent_clauses(limit?)` | Newest additions, useful for sanity checks |
+
+### Connect from each Claude surface
+
+**Claude Code** (your CLI):
+```bash
+claude mcp add openclauses https://openclauses-zeta.vercel.app/api/mcp
+```
+
+**Claude Desktop**: edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+```json
+{
+  "mcpServers": {
+    "openclauses": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://openclauses-zeta.vercel.app/api/mcp"]
+    }
+  }
+}
+```
+
+**claude.ai web**: Settings → Connectors → Add custom connector → URL: `https://openclauses-zeta.vercel.app/api/mcp`
+
+**Cursor / Zed / Continue / other MCP-aware tools**: use the URL above with HTTP transport.
+
+### Example prompts once connected
+
+> *Find me an assignment clause from a tech company.*
+>
+> *Compare Apple and Microsoft's indemnification clauses.*
+>
+> *Show me three recent force majeure clauses that explicitly mention pandemics.*
+>
+> *What's the longest non-compete clause in OpenClauses?*
+
+Claude will pick the right tool(s) automatically.
 
 ## Notes & limitations
 
