@@ -46,6 +46,7 @@ export const contracts = pgTable(
     sourceUrl: text("source_url").notNull(),
     counterparty: text("counterparty"),
     governingLaw: text("governing_law"),
+    agreementType: varchar("agreement_type", { length: 64 }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
@@ -55,6 +56,7 @@ export const contracts = pgTable(
     ),
     filerIdx: index("contracts_filer_idx").on(t.filerId),
     filingDateIdx: index("contracts_filing_date_idx").on(t.filingDate),
+    agreementTypeIdx: index("contracts_agreement_type_idx").on(t.agreementType),
   })
 );
 

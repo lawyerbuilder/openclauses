@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Scale } from "lucide-react";
 import { SearchBar } from "./search-bar";
+import { NavFavoritesLink } from "./nav-favorites-link";
 
 export function SiteHeader() {
   return (
@@ -34,7 +35,24 @@ export function SiteHeader() {
               href="/clauses"
               className="hover:text-foreground transition-colors"
             >
-              Browse
+              Clauses
+            </Link>
+            <Link
+              href="/agreements"
+              className="hover:text-foreground transition-colors"
+            >
+              Agreements
+            </Link>
+            <NavFavoritesLink />
+            <Link
+              href="/connect"
+              className="hover:text-foreground transition-colors inline-flex items-center gap-1.5"
+            >
+              <span
+                className="h-1.5 w-1.5 rounded-full bg-primary"
+                aria-hidden
+              />
+              Use from Claude
             </Link>
             <Link
               href="/about"

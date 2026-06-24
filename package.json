@@ -1,5 +1,5 @@
 {
-  "name": "openclauses",
+  "name": "scg-openclauses",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,8 @@
     "db:studio": "drizzle-kit studio",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "ingest:edgar": "tsx --env-file=.env.local scripts/ingest-edgar.ts",
-    "ingest:bulk": "tsx --env-file=.env.local scripts/ingest-bulk.ts"
+    "ingest:bulk": "tsx --env-file=.env.local scripts/ingest-bulk.ts",
+    "backfill:agreement-types": "tsx --env-file=.env.local scripts/backfill-agreement-types.ts"
   },
   "dependencies": {
     "@ai-sdk/groq": "^3.0.42",

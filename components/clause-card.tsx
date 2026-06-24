@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { truncate } from "@/lib/utils";
+import { FavoriteButton } from "./favorite-button";
 
 type Props = {
   id: number;
@@ -24,8 +25,12 @@ export function ClauseCard({
   highlightedHtml = false,
 }: Props) {
   return (
-    <article className="group surface surface-hover p-5">
-      <div className="flex items-start justify-between gap-4 mb-2.5">
+    <article className="group surface surface-hover p-5 relative">
+      <div className="absolute top-3 right-3">
+        <FavoriteButton clauseId={id} size="sm" />
+      </div>
+
+      <div className="flex items-start justify-between gap-4 mb-2.5 pr-9">
         <Link href={`/clauses/${id}`} className="flex-1 min-w-0">
           <h3 className="font-semibold text-[15px] leading-snug tracking-tight group-hover:text-primary transition-colors">
             {heading?.trim() || "Untitled clause"}

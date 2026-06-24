@@ -5,6 +5,8 @@ import { getClauseById, getRelatedClauses } from "@/lib/search";
 import { formatDate, truncate } from "@/lib/utils";
 import { db } from "@/lib/db";
 import { sql } from "drizzle-orm";
+import { FavoriteButton } from "@/components/favorite-button";
+import { CopyButton } from "@/components/copy-button";
 
 export const revalidate = 600;
 
@@ -64,9 +66,12 @@ export default async function ClauseDetailPage({ params }: Props) {
           {clause.clauseTypeName && (
             <p className="eyebrow mb-2">{clause.clauseTypeName}</p>
           )}
-          <h1 className="text-[1.75rem] sm:text-[2.125rem] font-semibold tracking-tight leading-tight">
-            {clause.heading?.trim() || "Untitled clause"}
-          </h1>
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="text-[1.75rem] sm:text-[2.125rem] font-semibold tracking-tight leading-tight flex-1">
+              {clause.heading?.trim() || "Untitled clause"}
+            </h1>
+            <FavoriteButton clauseId={clause.id} size="md" className="mt-1.5" />
+          </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span className="font-semibold text-foreground">{clause.filerName}</span>
@@ -79,8 +84,11 @@ export default async function ClauseDetailPage({ params }: Props) {
             <span className="tabular-nums">{formatDate(clause.filingDate)}</span>
           </div>
 
-          <div className="mt-10 surface p-7 sm:p-9">
-            <div className="clause-prose text-foreground/90">{clause.text}</div>
+          <div className="mt-10 surface p-7 sm:p-9 relative">
+            <div className="absolute top-3 right-3 flex items-center gap-1">
+              <CopyButton text={clause.text} label="Copy" />
+            </div>
+            <div className="clause-prose text-foreground/90 mt-2">{clause.text}</div>
           </div>
 
           {related.length > 0 && (
@@ -116,13 +124,19 @@ export default async function ClauseDetailPage({ params }: Props) {
           <section className="surface p-5">
             <p className="eyebrow mb-3">Source contract</p>
             <Link
+              href={`/contracts/${clause.contractId}`}
+              className="text-sm font-semibold leading-snug tracking-tight hover:text-primary transition-colors block mb-2"
+            >
+              {clause.contractTitle}
+            </Link>
+            <Link
               href={clause.sourceUrl}
               target="_blank"
               rel="noreferrer noopener"
-              className="text-sm font-semibold leading-snug tracking-tight hover:text-primary transition-colors flex items-start gap-1.5"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
             >
-              <span>{clause.contractTitle}</span>
-              <ExternalLink className="h-3.5 w-3.5 mt-0.5 shrink-0 text-muted-foreground" />
+              <ExternalLink className="h-3 w-3" />
+              View on SEC EDGAR
             </Link>
             <dl className="mt-5 space-y-2.5 text-sm">
               <div className="flex justify-between gap-3">

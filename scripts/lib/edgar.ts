@@ -42,23 +42,39 @@ export type EdgarHit = {
 };
 
 /**
- * Query EDGAR full-text search for exhibits that look like material contracts.
- * Returns the underlying filing identifiers we need to fetch the exhibit HTML.
+ * Query EDGAR full-text search for exhibits matching the given criteria.
+ * Returns a single page of underlying filing identifiers.
+ *
+ * EDGAR caps result pages at 100. To walk further, pass `from` and paginate.
  */
 export async function searchMaterialContractExhibits(opts: {
   forms?: string[];
   query?: string;
+  /** Page size — EDGAR caps at 100 per request. */
   limit?: number;
+  /** Result offset for pagination (0, 100, 200, …). */
+  from?: number;
+  /** Optional date filters, YYYY-MM-DD format. */
+  startDate?: string;
+  endDate?: string;
 }): Promise<EdgarHit[]> {
   const forms = opts.forms ?? ["10-K", "10-Q", "8-K"];
-  const q = opts.query ?? "\"material contract\"";
-  const limit = Math.min(opts.limit ?? 25, 100);
+  const q = opts.query ?? `"material contract"`;
+  const size = Math.min(opts.limit ?? 100, 100);
+  const from = Math.max(0, opts.from ?? 0);
 
   const params = new URLSearchParams({
     q,
     forms: forms.join(","),
+    from: String(from),
   });
-  const url = `https://efts.sec.gov/LATEST/search-index?${params.toString()}&from=0&size=${limit}`;
+  if (opts.startDate) params.set("dateRange", "custom");
+  if (opts.startDate) params.set("startdt", opts.startDate);
+  if (opts.endDate) params.set("enddt", opts.endDate);
+
+  // EDGAR ignores `size` on search-index; the page size is fixed at 100.
+  // We still slice down to `size` if the caller wants a smaller page.
+  const url = `https://efts.sec.gov/LATEST/search-index?${params.toString()}`;
   const res = await throttledFetch(url);
   const data = (await res.json()) as {
     hits: {
@@ -75,7 +91,7 @@ export async function searchMaterialContractExhibits(opts: {
     };
   };
 
-  return data.hits.hits.map((h) => {
+  const all = data.hits.hits.map((h) => {
     // _id is e.g. "0001234567-24-000010:exhibit10-1.htm"
     const [accessionWithDashes, filename] = h._id.split(":");
     return {
@@ -87,6 +103,7 @@ export async function searchMaterialContractExhibits(opts: {
       filename: filename ?? "",
     };
   });
+  return size < 100 ? all.slice(0, size) : all;
 }
 
 /**

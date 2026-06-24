@@ -154,6 +154,22 @@ export async function getRelatedClauses(clauseTypeId: number | null, excludeId: 
   }>;
 }
 
+export async function getCorpusStats() {
+  const result = await db.execute(sql`
+    select
+      (select count(*)::int from clauses) as "totalClauses",
+      (select count(*)::int from clauses where clause_type_id is not null) as "classifiedClauses",
+      (select count(*)::int from contracts) as "totalContracts",
+      (select count(*)::int from filers) as "totalFilers"
+  `);
+  return result.rows[0] as {
+    totalClauses: number;
+    classifiedClauses: number;
+    totalContracts: number;
+    totalFilers: number;
+  };
+}
+
 export async function listClauseTypes() {
   const result = await db.execute(sql`
     select
@@ -175,6 +191,139 @@ export async function listClauseTypes() {
     description: string | null;
     category: string | null;
     clauseCount: number;
+  }>;
+}
+
+export async function listAgreementTypeCounts() {
+  const result = await db.execute(sql`
+    select
+      contracts.agreement_type as slug,
+      count(distinct contracts.id)::int as "contractCount",
+      count(clauses.id)::int as "clauseCount"
+    from contracts
+    left join clauses on clauses.contract_id = contracts.id
+    where contracts.agreement_type is not null
+    group by contracts.agreement_type
+    order by "contractCount" desc
+  `);
+  return result.rows as Array<{ slug: string; contractCount: number; clauseCount: number }>;
+}
+
+export async function listContractsByAgreementType(opts: {
+  slug?: string;
+  limit?: number;
+  offset?: number;
+}) {
+  const limit = opts.limit ?? 30;
+  const offset = opts.offset ?? 0;
+  const result = await db.execute(sql`
+    select
+      contracts.id,
+      contracts.title,
+      contracts.filing_type as "filingType",
+      contracts.filing_date as "filingDate",
+      contracts.source_url as "sourceUrl",
+      contracts.agreement_type as "agreementType",
+      filers.id as "filerId",
+      filers.name as "filerName",
+      filers.ticker,
+      filers.sic_industry as "sicIndustry",
+      (select count(*)::int from clauses where contract_id = contracts.id) as "clauseCount"
+    from contracts
+    join filers on filers.id = contracts.filer_id
+    ${opts.slug ? sql`where contracts.agreement_type = ${opts.slug}` : sql``}
+    order by contracts.filing_date desc, contracts.id desc
+    limit ${limit} offset ${offset}
+  `);
+  return result.rows as Array<{
+    id: number;
+    title: string;
+    filingType: string;
+    filingDate: string;
+    sourceUrl: string;
+    agreementType: string | null;
+    filerId: number;
+    filerName: string;
+    ticker: string | null;
+    sicIndustry: string | null;
+    clauseCount: number;
+  }>;
+}
+
+export async function countContractsByAgreementType(slug?: string) {
+  const result = await db.execute(sql`
+    select count(*)::int as count
+    from contracts
+    ${slug ? sql`where agreement_type = ${slug}` : sql``}
+  `);
+  return (result.rows[0] as { count: number }).count;
+}
+
+export type ContractDetail = {
+  id: number;
+  title: string;
+  filingType: string;
+  filingDate: string;
+  sourceUrl: string;
+  accessionNumber: string;
+  exhibitNumber: string | null;
+  counterparty: string | null;
+  governingLaw: string | null;
+  agreementType: string | null;
+  filerId: number;
+  filerName: string;
+  ticker: string | null;
+  sicIndustry: string | null;
+};
+
+export async function getContractById(id: number): Promise<ContractDetail | null> {
+  const result = await db.execute(sql`
+    select
+      contracts.id,
+      contracts.title,
+      contracts.filing_type as "filingType",
+      contracts.filing_date as "filingDate",
+      contracts.source_url as "sourceUrl",
+      contracts.accession_number as "accessionNumber",
+      contracts.exhibit_number as "exhibitNumber",
+      contracts.counterparty,
+      contracts.governing_law as "governingLaw",
+      contracts.agreement_type as "agreementType",
+      filers.id as "filerId",
+      filers.name as "filerName",
+      filers.ticker,
+      filers.sic_industry as "sicIndustry"
+    from contracts
+    join filers on filers.id = contracts.filer_id
+    where contracts.id = ${id}
+    limit 1
+  `);
+  return (result.rows[0] ?? null) as ContractDetail | null;
+}
+
+export async function getClausesForContract(contractId: number) {
+  const result = await db.execute(sql`
+    select
+      clauses.id,
+      clauses.heading,
+      clauses.text,
+      clauses.position,
+      clauses.word_count as "wordCount",
+      clause_types.slug as "clauseTypeSlug",
+      clause_types.name as "clauseTypeName"
+    from clauses
+    left join clause_types on clause_types.id = clauses.clause_type_id
+    where clauses.contract_id = ${contractId}
+    order by clauses.position asc, clauses.id asc
+  `);
+  return result.rows as Array<{
+    id: number;
+    heading: string | null;
+    text: string;
+    position: number;
+    wordCount: number;
+    clauseTypeSlug: string | null;
+    clauseTypeName: string | null;
   }>;
 }
 
