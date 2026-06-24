@@ -60,6 +60,40 @@ export const QUERIES: QueryStrategy[] = [
   // Dispute / settlement
   { id: "settlement",       name: "Settlement Agreement",      category: "Dispute",    description: "Settlement and release agreements resolving disputes.",                                                            query: `"settlement agreement"`,                forms: ["10-K", "10-Q", "8-K"] },
   { id: "indemnification",  name: "Indemnification Agreement", category: "Dispute",    description: "Standalone indemnification agreements with officers, directors, or counterparties.",                              query: `"indemnification agreement"`,           forms: ["10-K", "8-K"] },
+  { id: "release",          name: "Release Agreement",         category: "Dispute",    description: "Mutual and one-way releases of legal claims, often paired with settlements.",                                     query: `"release agreement"`,                   forms: ["10-K", "10-Q", "8-K"] },
+  { id: "tolling",          name: "Tolling Agreement",         category: "Dispute",    description: "Agreements that pause statutes of limitations during settlement negotiations.",                                   query: `"tolling agreement"`,                   forms: ["10-K", "10-Q", "8-K"] },
+
+  // Additional commercial / operating
+  { id: "framework",        name: "Framework Agreement",       category: "Commercial", description: "Umbrella commercial frameworks under which transactional documents are issued.",                                  query: `"framework agreement"`,                 forms: ["10-K", "10-Q", "8-K"] },
+  { id: "outsourcing",      name: "Outsourcing Agreement",     category: "Commercial", description: "Business-process or IT outsourcing arrangements.",                                                                 query: `"outsourcing agreement"`,               forms: ["10-K", "10-Q", "8-K"] },
+  { id: "agency",           name: "Agency Agreement",          category: "Commercial", description: "Sales-agency, marketing-agency, and similar principal-agent arrangements.",                                        query: `"agency agreement"`,                    forms: ["10-K", "10-Q", "8-K"] },
+  { id: "sla",              name: "Service Level Agreement",   category: "Commercial", description: "Performance SLAs covering uptime, response time, and remedies.",                                                   query: `"service level agreement"`,             forms: ["10-K", "10-Q", "8-K"] },
+  { id: "operating",        name: "Operating Agreement",       category: "Commercial", description: "LLC operating agreements governing internal economics and governance.",                                            query: `"operating agreement"`,                 forms: ["10-K", "10-Q", "8-K"] },
+  { id: "rd-agreement",     name: "R&D Agreement",             category: "Commercial", description: "Joint or sponsored research and development agreements.",                                                          query: `"research and development agreement"`,  forms: ["10-K", "10-Q", "8-K"] },
+
+  // Additional financing
+  { id: "underwriting",     name: "Underwriting Agreement",    category: "Financing",  description: "Underwriting agreements for public equity and debt offerings.",                                                    query: `"underwriting agreement"`,              forms: ["8-K", "10-Q"] },
+  { id: "placement",        name: "Placement Agency Agreement", category: "Financing", description: "Best-efforts placement agent engagements for private and registered placements.",                                  query: `"placement agency agreement"`,          forms: ["8-K", "10-Q"] },
+  { id: "intercreditor",    name: "Intercreditor Agreement",   category: "Financing",  description: "Inter-lender priority, payment, and enforcement agreements.",                                                      query: `"intercreditor agreement"`,             forms: ["10-K", "10-Q", "8-K"] },
+  { id: "subordination",    name: "Subordination Agreement",   category: "Financing",  description: "Debt subordination and standby creditor agreements.",                                                              query: `"subordination agreement"`,             forms: ["10-K", "10-Q", "8-K"] },
+  { id: "pledge",           name: "Pledge Agreement",          category: "Financing",  description: "Equity, intellectual property, or other asset pledges securing obligations.",                                      query: `"pledge agreement"`,                    forms: ["10-K", "10-Q", "8-K"] },
+  { id: "isda",             name: "ISDA Master Agreement",     category: "Financing",  description: "ISDA master agreements governing OTC derivatives between counterparties.",                                         query: `"isda master agreement"`,               forms: ["10-K", "10-Q", "8-K"] },
+
+  // Additional corporate / M&A
+  { id: "tax-matters",      name: "Tax Matters Agreement",     category: "Corporate",  description: "Tax sharing, indemnification, and procedural agreements between affiliated entities.",                              query: `"tax matters agreement"`,               forms: ["8-K", "10-Q"] },
+  { id: "tax-sharing",      name: "Tax Sharing Agreement",     category: "Corporate",  description: "Inter-affiliate tax allocation agreements, common in spin-offs.",                                                   query: `"tax sharing agreement"`,               forms: ["8-K", "10-Q"] },
+  { id: "earn-out",         name: "Earn-Out Agreement",        category: "Corporate",  description: "Earn-out and contingent-consideration arrangements in M&A.",                                                       query: `"earn-out agreement"`,                  forms: ["8-K", "10-Q"] },
+  { id: "lock-up",          name: "Lock-Up Agreement",         category: "Corporate",  description: "Insider lock-ups limiting share sales after IPOs and other transactions.",                                        query: `"lock-up agreement"`,                   forms: ["8-K", "10-Q"] },
+  { id: "investor-rights",  name: "Investor Rights Agreement", category: "Corporate",  description: "Preferred-investor rights — information, board, preemptive, registration.",                                       query: `"investor rights agreement"`,           forms: ["8-K", "10-Q"] },
+  { id: "side-letter",      name: "Side Letter",               category: "Corporate",  description: "Side letters granting bespoke rights or amending standard documents.",                                            query: `"side letter"`,                         forms: ["10-K", "10-Q", "8-K"] },
+
+  // Additional employment / equity comp
+  { id: "change-in-control", name: "Change-in-Control Agreement", category: "Employment", description: "Severance and acceleration agreements triggered by change-in-control events.",                               query: `"change in control agreement"`,         forms: ["10-K", "8-K"] },
+  { id: "stock-option",     name: "Stock Option Agreement",    category: "Employment", description: "Individual option grants and award agreements.",                                                                 query: `"stock option agreement"`,              forms: ["10-K", "8-K"] },
+  { id: "restricted-stock", name: "Restricted Stock Agreement", category: "Employment", description: "RSU and restricted stock award agreements.",                                                                    query: `"restricted stock agreement"`,          forms: ["10-K", "8-K"] },
+
+  // Additional IP
+  { id: "patent-license",   name: "Patent License Agreement",  category: "IP & Confidentiality", description: "Patent license, cross-license, and patent-pool agreements.",                                          query: `"patent license agreement"`,            forms: ["10-K", "10-Q", "8-K"] },
 ];
 
 export const QUERY_BY_SLUG = new Map(QUERIES.map((q) => [q.id, q]));
