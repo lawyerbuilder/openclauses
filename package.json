@@ -15,7 +15,8 @@
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "ingest:edgar": "tsx --env-file=.env.local scripts/ingest-edgar.ts",
     "ingest:bulk": "tsx --env-file=.env.local scripts/ingest-bulk.ts",
-    "backfill:agreement-types": "tsx --env-file=.env.local scripts/backfill-agreement-types.ts"
+    "backfill:agreement-types": "tsx --env-file=.env.local scripts/backfill-agreement-types.ts",
+    "reclassify": "tsx --env-file=.env.local scripts/reclassify-clauses.ts"
   },
   "dependencies": {
     "@ai-sdk/groq": "^3.0.42",
